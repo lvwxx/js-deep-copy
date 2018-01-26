@@ -56,3 +56,15 @@ function assign(to, from) {
     }
     return to;
 }
+
+// 入口，对参数做判断
+function deepClone(obj) {
+    if (Array.isArray(obj)) {
+        return obj.map(i=>deepClone(i));
+    } else if (typeof obj === 'object') {
+        return assign({}, obj);
+    }
+
+    return obj;
+}
+
