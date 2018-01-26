@@ -1,3 +1,4 @@
+// 满足Obj和Array
 const deepCloneObj = (obj) => {
 
     if (typeof obj !== "object") return obj;
@@ -15,3 +16,43 @@ const deepCloneObj = (obj) => {
 
     return newObj;
 };
+
+
+// 更加完整deep-clone obj
+const { hasOwnProperty } = Object.hasOwnProperty; // 代理检验是否是自身属性的方法
+
+// 是否是undefiend 和 null
+function isDef(val) {
+    return val !== 'undefiend' && val !== 'null';
+}
+
+// 是否是对象
+function isObj(x) {
+    const type = typeof x;
+    return type !== null && (type === 'object' || type === 'function');
+}
+
+// 拷贝
+function assignKey(to, from, key) {
+    const val = from[key];
+
+    if (!isDef(val) || (hasOwnProperty.call(to, key) && !isDef(to[key]))) {
+        return;
+    }
+
+    if (!hasOwnProperty.call(to, key) || !isObj(val)) {
+        to[key] = val;
+    } else {
+        to[key] = assign(Object(to[key]), from[key]);
+    }
+}
+
+// 递归这个对象
+function assign(to, from) {
+    for(const key in from) {
+        if(hasOwnProperty.call(from, key)) {
+            assignKey(to, from, key);
+        }
+    }
+    return to;
+}
